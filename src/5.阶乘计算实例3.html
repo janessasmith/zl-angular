@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>阶乘计算实例Demo03</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="Factorial">
+        <form action="">
+            <input type="text" ng-model="factorial.number"/>
+            的阶乘结果是：
+            <span>{{factorial.result}}</span>
+            <br/>
+            <button ng-click="compute()">计算</button>
+            <br/>
+            <button ng-click="reset()">重置</button>
+        </form>
+    </div>
+    <pre>
+        要求并非实时的计算结果，而是等到用户确定自己已经输入完毕，然后再进行计算
+        给demo03添加两个按钮，一个用于确认计算，一个用于清空计算
+        然后给表单提交和点击重置分别绑定回调
+
+        去掉了$watch对factorial.number的监测，而是在表单被提交的时候才进行计算，然后点击重置的时候，讲number和result进行重置
+
+
+        angular对DOM元素绑定事件的规则如下：
+            onclick --- ng-click
+            ondbclick --- ng-dbclick
+    </pre>
+    <script type="text/javascript">
+        function Factorial($scope) {
+            $scope.factorial = {};
+            $scope.factorial.number = 0;
+            $scope.factorial.result = 1;
+
+            $scope.factorialNum = function(num) {
+                if(num == 0) {
+                    return 1;
+                }
+                else {
+                    return num*$scope.factorialNum(--num);
+                }
+            };
+
+            $scope.compute = function() {
+                $scope.factorial.result = $scope.factorialNum($scope.factorial.number);
+            }
+
+            $scope.reset = function() {
+                $scope.factorial.number  = 0;
+                $scope.factorial.result = 1;
+            }
+        }
+    </script>
+</body>
+</html>

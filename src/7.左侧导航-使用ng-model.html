@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>7.左侧导航-使用ng-repeat</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+
+        /*nav-side*/
+        .nav-side {
+            float: left;
+            width: 170px;
+            background-color: #4d637b;
+        }
+        .nav-first-ul {
+            height: 50px;
+            line-height: 50px;
+            border-bottom: 1px solid #5d7287;
+        }
+        .nav-first-ul li img {
+            display: block;
+            float: left;
+            margin: 16px 7px 0 23px;
+        }
+        .nav-first-ul li a {
+            display: block;
+            float: left;
+            width: 85px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #fff;
+        }
+        .nav-first-ul li span {
+            display: block;
+            float: left;
+            width: 5px;
+            height: 9px;
+            margin-top: 21px;
+            background: url(../images/nav-dropup.png) no-repeat;
+        }
+        .nav-second {
+            padding: 15px 0;
+            background-color: #546c86;
+            border-bottom: 1px solid #5d7287;
+        }
+        .nav-second ul li {
+            width: 70px;
+            margin-left: 49px;
+            padding-left: 13px;
+            line-height: 31px;
+            font-size: 12px;
+            color: #fff;
+            background: url(../images/nav-second-icon.jpg) no-repeat left center;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .nav-second ul li a{
+            color: #fff;
+        }
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/angular-ui-router.js"></script>
+</head>
+<body>
+    <div ng-app="menuApp">
+        <div class="nav-side" ng-controller="navController">
+            <div ng-model="nav.text">
+                <div class="nav-first">
+                    <ul class="nav-first-ul">
+                        <li>
+                            <img src="../images/nav-icon01.png" alt=""/>
+                            <a href="">{{nav.text}}</a>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav-first">
+                    <ul class="nav-first-ul">
+                        <li>
+                            <img src="../images/nav-icon02.png" alt=""/>
+                            <a href="">{{nav.text}}</a>
+                            <span></span>
+                        </li>
+                    </ul>
+                    <div class="nav-second">
+                        <ul>
+                            <li><a href="#">英文简报</a></li>
+                            <li><a href="#">俄文简报</a></li>
+                            <li><a href="#">中文简报</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nav-first">
+                    <ul class="nav-first-ul">
+                        <li>
+                            <img src="../images/nav-icon03.png" alt=""/>
+                            <a href="">核动力</a>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav-first">
+                    <ul class="nav-first-ul">
+                        <li>
+                            <img src="../images/nav-icon04.png" alt=""/>
+                            <a href="">核务事件</a>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var navModule = angular.module('menuApp', []);
+        navModule.controller('navController', function($scope) {
+//            var nav = $scope.nav = {};
+//            nav.content = [
+//                {text: '政务相关'}
+//            ];
+            $scope.navs = [
+                {'text': '政务相关'},
+                {'text': '简报相关'},
+                {'text': '核动力'},
+                {'text': '核务事件'}
+            ];
+        });
+    </script>
+    <pre>
+        在做这个demo的时候，我对ng-model和ng-repeat感到很模糊，可能是基础不扎实吧，理解了半天也不清楚什么地方应该用这个，两种关系是什么，到底哪个是用来绑定的
+        好吧，下面，我就大概讲述一下，自己的理解~~
+        1.AngularJS中的数据绑定
+            首先我们先了解一下原始的方式，前端这块，一般我们的提供给用户的，其实是一个单向视图（这是我自己起的名字），可以理解为
+        是将多个模型中的数据和模板组合在一起形成的视图，如果没有创建任何自定义的JS组件，视图只会体现出它渲染时模型暴露出的数据。
+            而AngularJS则是创建实时模板来替代视图，而不是将数据合并进模板之后更新DOM，任何一个独立视图组件中的值都可以动态替换的。要
+        实现这个功能，只需要在HTML页面中引用angular的js，并在某个DOM元素上明确设置ng-app属性就可以了。ng-app属性声明所有被其包含的内容都属于这个ANuglarJS应用，
+        这也是我们可以在Web应用中嵌套AngularJS应用的原因。
+
+        这里插一句什么是MVC?（这里可以画一个图来展示一下）
+            MVC（Model View Controller 模型-视图-控制器）是一种软件架构设计模式，它将表现从用户交互中分离出来。通常来讲，模型中包含应用的数据和与数据进行交互的方法，视图将数据呈现给用户，而控制器则是二者的桥梁。
+            这种表现分离，视图不需要知道如何保存对象，只需要知道如何显示就可以，也意味着数据模型不需要同视图进行讲话，只需要包含数据和操作视图的方式。控制器用来存放二者绑定在一起的业务逻辑。
+        2.简单的数据绑定
+    </pre>
+</body>
+</html>

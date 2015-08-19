@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router和ngAnimate的结合-实现表单向导Demo</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+
+
+        /* style.css */
+        /* BASIC STYLINGS
+        ============================================================================= */
+        body                            { padding-top:20px; }
+
+        /* form styling */
+        #form-container                { background:#2f2f2f; margin-bottom:20px;
+            border-radius:5px; }
+        #form-container .page-header   { background:#151515; margin:0; padding:30px;
+            border-top-left-radius:5px; border-top-right-radius:5px; }
+
+        /* numbered buttons */
+        #status-buttons                 {  }
+        #status-buttons a               { color:#FFF; display:inline-block; font-size:12px; margin-right:10px; text-align:center; text-transform:uppercase; }
+        #status-buttons a:hover         { text-decoration:none; }
+
+        /* we will style the span as the circled number */
+        #status-buttons span            { background:#080808; display:block; height:30px; margin:0 auto 10px; padding-top:5px; width:30px;
+            border-radius:50%; }
+
+        /* active buttons turn light green-blue*/
+        #status-buttons a.active span   { background:#00BC8C; }
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/angular-ui-router.js"></script>
+    <script type="text/javascript" src="../js/100.form-app.js"></script>
+</head>
+<body>
+    <!--angular module-->
+    <div ng-app="formApp">
+        <div class="container">
+            <!--添加ui-view-->
+            <div ui-view></div>
+        </div>
+    </div>
+    <pre>
+        1. 创建项目要有一个模板结构，需要布局文件、每个表单的视图文件、格式文件以及js文件，这个页面就是布局文件
+           每一个表单的xxx.html表示层级结构中的html文件，这些结构最终创建了表单结构
+        2. 布局文件需要加载我们所需的资源----AngularJS、ngAnimate、Ui Router以及其他脚本和样式表，并设定一个ui-view用来告知Ui Router我们的视图需要显示到哪里
+        3. 在100.form-app.js文件中开始创建Angular应用和最基本的路由配置，也就是如何把Angular App应用到div上面
+        4. 在100.form-app.js页面中，建立了相应的路由，给每个视图区域定义(url)，视图文件(templateUrl)和控制器(controller)
+    </pre>
+</body>
+</html>

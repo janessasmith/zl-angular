@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>6.导航菜单</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+
+        a, a:visited {
+            outline:none;
+            color:#fff;
+        }
+
+        a:hover {
+            text-decoration:none;
+        }
+
+        /*nav*/
+        nav{
+            width: 400px;
+            height: 52px;
+            margin: 60px auto 45px;
+            background-color:#5597b4;
+            box-shadow: 0 1px 1px #ccc; /*水平位移0，垂直位移1px，模糊半径5px，阴影颜色#ccc*/
+            border-radius: 2px;
+        }
+        nav a {
+            display: block;
+            float: left;
+            width: 100px;
+            height: 52px;
+            line-height: 52px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+
+            -webkit-transition: background-color .25s;
+            -moz-transition: background-color .25s;;
+            transition: background-color .25s;
+        }
+        nav a:first-child {
+            border-radius: 2px 0 0 2px;;
+        }
+        nav a:last-child {
+            border-radius: 0 2px 2px 0;
+        }
+        nav.home .home,
+        nav.achieve .achieve,
+        nav.list .list,
+        nav.about .about {
+            background-color: #e35885;
+        }
+
+        p {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #7d9098;
+        }
+        p strong {
+            padding: 0 5px;
+            color:#fff;
+            background-color: #c4d7e0;
+        }
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <!--导航nav必须以“active”这个类为类名，这样才能判断a标签点击后显示哪一个
+        $event.preventDefault()是用来避免点击a标签出现的跳转-->
+    <nav class="{{active}}" ng-click="$event.preventDefault()">
+        <a href="http://www.baidu.com/" class="home" ng-click="active='home'">Home</a>
+        <a href="#" class="achieve" ng-click="active='achieve'">Achieve</a>
+        <a href="#" class="list" ng-click="active='list'">List</a>
+        <a href="#" class="about" ng-click="active='about'">About</a>
+    </nav>
+
+    <!--ng-show当引号中的值为真，则显示出来，反则ng-hide不显示
+        由于active一开始没有设置，所以在这里初始只会显示第一排的p段落-->
+    <p ng-hide="active">Please Click a Menu Item</p>
+    <p ng-show="active">You Chose <strong>{{active}}</strong></p>
+
+    <pre>
+        1.在这里讲一下我所理解的什么是AngularJS?
+            AngularJS是一个把HTML（视图）绑定到JS对象（模型）上的框架。当模型改变时，页面也能自动随之更新，反之亦然。当某个域的内容发生变化时，与之相关联的模型也能更新。
+            AngularJS处理了所有的中间代码，所以就可以不用想jQuery那样，手动的更新HTML或者事件监听。也就是尽量不要使用任何的jQuery。
+            AngularJs通过大量的指令让模型和HTML元素之间做关联。也就是以ng-开头的属性，并且能添加到任何元素上。
+        2.导航nav必须以“active”这个类为类名，这样才能判断a标签点击后显示哪一个，$event.preventDefault()是用来避免点击a标签出现的跳转
+        3.ng-show当引号中的值为真，则显示出来，反则ng-hide不显示，由于active一开始没有设置，所以在这里初始只会显示第一排的p段落
+    </pre>
+</body>
+</html>

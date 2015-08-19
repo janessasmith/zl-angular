@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>input元素的ng-model属性Demo</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="CheckStatus">
+        <form action="">
+            <input type="checkbox" ng-model="checkRabbit"/><span>{{checkRabbit}}</span>
+            <br/>
+            <input type="checkbox" ng-model="checkDog"/><span>{{checkDog}}</span>
+            <br/>
+            <input type="checkbox" ng-model="checkCat"/><span>{{checkCat}}</span>
+        </form>
+    </div>
+    <pre>
+        如果是text类型的input，绑定的就是它的value值，
+        如果是checkbox，绑定的就是选中状态的true或false;
+
+        对input的绑定是双向的，即变量的变化也会引起选中与否的变化（或者是value的变化），同样，改变input的选中状态（或者是value的值），它们绑定的变量也会改变
+    </pre>
+    <script type="text/javascript">
+        function CheckStatus($scope) {
+            $scope.checkRabbit = '小兔子';
+            $scope.checkDog = '小狗狗';
+            $scope.checkCat = '小猫咪';
+        }
+    </script>
+</body>
+</html>

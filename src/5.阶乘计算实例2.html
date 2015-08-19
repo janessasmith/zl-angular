@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>阶乘计算实例Demo02</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="Factorial">
+        <form action="">
+            <input type="text" ng-model="factorial.number"/>
+            的阶乘结果是：
+            <span>{{factorial.result}}</span>
+        </form>
+    </div>
+    <pre>
+        result的改变，本质上是由于number的改变，而不是input的value值改变，number的改变有可能是input的value值改变，也有可能其它input也绑定了number，也有可能后台的数据发生了改变
+        因此，不使用input的ng-change属性来绑定计算result的回调，而是监测number的改变，一旦number发生改变，就实时计算result，并在ui上显示
+
+        $watch(参数1, 参数2)：
+            参数1：被监测的内容，字符串格式，这个字符串中的内容可以是一个表达式，也可以是$scope中的属性
+            参数2：被监测的内容发生改变后调用的回调函数
+
+        注意：如果是字符串格式，不需要写$scope，譬如这里的factorial.number,但如果是变量格式，则必须传入$scope，如$scope.$watch($scope.factorial.number,$scope.compute)
+    </pre>
+    <script type="text/javascript">
+        function Factorial($scope) {
+            $scope.factorial = {};
+            $scope.factorial.number = 0;
+            $scope.factorial.result = 1;
+
+            $scope.factorialNum = function(num) {
+                if(num == 0) {
+                    return 1;
+                }
+                else {
+                    return num*$scope.factorialNum(--num);
+                }
+            };
+
+            $scope.compute = function() {
+                $scope.factorial.result = $scope.factorialNum($scope.factorial.number);
+            }
+
+            $scope.$watch('factorial.number', $scope.compute); //$watch核心
+        }
+    </script>
+</body>
+</html>

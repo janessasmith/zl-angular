@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>入门案例-购物车Demo</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        .car{width:450px;margin:0 auto;}
+        .car-cont{font-family:'Microsoft YaHei';font-size:12px;color:#999;margin-bottom:10px;}
+        .title,.quantity,.price,.sum,.remove-btn{float:left;margin-right:10px;}
+        .sum{color:#cc0000;}
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+
+</head>
+<body>
+    <div ng-controller="myCarController">
+        <h2>My Shopping Cart</h2>
+        <div class="car">
+            <!--数据绑定-->
+            <div class="car-cont clearfix" ng-repeat="item in items">
+                <div class="title">{{item.title}}</div>
+                <div class="quantity"><input type="text" ng-model="item.quantity"/></div>
+                <div class="price">{{item.price|currency}}</div>
+                <div class="sum">{{item.price*item.quantity|currency}}</div>
+                <div class="remove-btn"><button ng-click="remove($index)">remove</button></div>
+            </div>
+        </div>
+        <!--说明-->
+        <pre>
+            1. ng-app属性: 添加在html中&lt;html ng-app&gt;用来告诉页面哪一部分需要使用angular管理
+            2. ng-controller：添加&lt;div ng-controller="myCarController"&gt;使用一个控制器来控制页面中的某个区域，然后调用定义的myCarController函数
+            3. ng-repeat：添加&lt;div ng-repeat="item in items"&gt;循环当前的标签（包括里面的内容和自己），循环中的当前变量就是item，item在当前作用域的items变量里进行循环
+            4. {{}}}:使用{{}}}来动态的绑定视图里显示的数据，{{}}}里就是当前作用域里的变量
+            5. ng-model:这里ng-model用在输入框里，使输入的内容和它等于的变量数据进行绑定，也就是说，输入的值变化，变量就变化，变量变化，视图上对应显示的数据也变化
+            6. currency:{{item.price|currency}}}angular带有过滤器特性，可以用来做文本格式的转换，其中，currency货币过滤器，可以实现美元格式化
+            7. ng-click:为元素绑定click事件的回调，点击后就调用作用域下的remove方法
+            8. $index：是在ng-repeat过程中的循环的索引值，从0开始
+            9. 控制器：function myCarController($scope){...}控制器负责管理相关的区域的逻辑，函数的形参$scope就是当前区域的作用域，区域中的变量，方法，都从它的作用域中寻找
+        </pre>
+    </div>
+    <script>
+        function myCarController($scope) {
+            $scope.items = [
+                {"title": "兔子", "quantity": "1", "price": "100"},
+                {"title": "小狗", "quantity": "1", "price": "200"},
+                {"title": "猫儿", "quantity": "2", "price": "300"},
+                {"title": "仓鼠", "quantity": "1", "price": "100"},
+            ];
+            $scope.remove = function(index) {
+                $scope.items.splice(index, 1);
+            }
+        }
+    </script>
+</body>
+</html>

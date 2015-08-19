@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>创建自定义angular模块Demo</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="TextController">
+            <h1>{{text.message}}</h1>
+            <h1>{{text.name}}</h1>
+        </div>
+    </div>
+    <pre>
+        1. ng-app可以加在任何元素上，表示使用这个模块来管理这个元素中的所有内容
+        2. 但一个页面只能有一个ng-app不能有多个，不同的页面可以运用不同的ng-app模块，但是可以在同一个js里定义多个模块
+        3. 定义ng-app="模块名",然后在js中使用如下方法来扩展模块：
+            var myAppModule = angular.module('模块名', []);
+            angular.module()中的第二个参数必须是一个数组，用于定义该模块依赖的模块，数组的值是字符串，也就是依赖的模块的名字；一旦写入了依赖的模块，那么该模块也就拥有了依赖的模块的指令，方法等等
+        4. 可以在自己扩展的模块下添加控制器：
+            myAppModule.controller('TextController', function($scope) {...});
+            这里$scope.text = messages;text是$scope作用域下的一个对象，但messages却是一个外部的对象，使用这种方式来定义作用域下的对象，而不是直接在作用域中声明，这样，同一个变量，可以在多个模块或多个控制器中被使用
+    </pre>
+    <script type="text/javascript">
+        var messages = {};
+        messages.message = 'hi';
+        messages.name = 'code-demo';
+        //定义myApp的模块
+        var myAppModule = angular.module('myApp', []);
+        myAppModule.controller('TextController', function($scope) {
+            $scope.text = messages;
+        });
+        //定义另外一个ohterApp的模块
+        var otherAppModule = angular.module('otherApp', []);
+        otherAppModule.controller('TextController', function($scope) {
+            $scope.text = messages;
+            $scope.text.name = 'other-code-demo';
+        });
+
+        //如果ng-app没有定义且是写在html中的
+        /*function TextController($scope) {
+            var messages={};
+            messages.message='hi';
+            messages.name='code';
+            $scope.text=messages;
+        }*/
+    </script>
+</body>
+</html>

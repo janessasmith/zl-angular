@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>阶乘计算实例Demo01</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="Factorial">
+        <form action="">
+            <input type="text" ng-model="factorial.number" ng-change="compute()"/>
+            的阶乘结果是：
+            <span>{{factorial.result}}</span>
+        </form>
+    </div>
+    <pre>
+        1. ng-model:是将input元素与factorial.number进行绑定
+        2. ng-change:是给input元素的change事件绑定回调函数为compute()方法
+        3. {{factorial.result}}:compute()方法会通过factorial.number的值计算factorial.result的值，然后factorial.result的值是和ui进行绑定的，所以，input的value值改变时，span中相应的值也会改变
+    </pre>
+    <script type="text/javascript">
+        function Factorial($scope) {
+            $scope.factorial = {};
+            $scope.factorial.number = 0;
+            $scope.factorial.result = 1;
+
+            $scope.factorialNum = function(num) {
+                if(num == 0) {
+                    return 1;
+                }
+                else {
+                    return num*$scope.factorialNum(--num);
+                }
+            };
+
+            $scope.compute = function() {
+                $scope.factorial.result = $scope.factorialNum($scope.factorial.number);
+            }
+        }
+    </script>
+</body>
+</html>
