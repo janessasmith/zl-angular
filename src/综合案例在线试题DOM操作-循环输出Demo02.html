@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>综合案例-在线试题Demo02</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+        .red{color:#ff0000;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="testController">
+    <h1>{{test.newTitle}}</h1>
+    题目：<input type="text" ng-model="test.name"/>
+    <br/>
+    分数：<input type="text" ng-model="test.score"/>
+    <br/>
+    选项：<button ng-click="addOption()">添加选项</button>
+    <br/>
+    <ul>
+        <li ng-repeat="option in test.options">
+            <b>{{$index+1}}</b>
+            <input type="text" ng-model="option.content" value="option.content"/>
+            <a href="javascript:void(0)" ng-click="delOption($index)">删除</a>
+        </li>
+    </ul>
+    <hr/>
+
+    <div>
+        <h1>{{test.previewTitle}}</h1>
+        <b>{{test.name}}</b> ({{test.score}}分)
+        <ul>
+            <li ng-repeat="option in test.options">
+                <b>{{$index+1}}</b>
+                <input type="radio" name="optRadio"/>
+                {{option.content}}
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var myAppModule = angular.module('myApp', [], function() {
+       console.log('started');
+    });
+
+//    添加JS代码
+//    初始化，将所有数据写成testModel对象
+    var testModel = {
+        newTitle:'新建试题',
+        previewTitle:'预览试题',
+        name:'',
+        score:'',
+        options:[]
+    }
+
+    myAppModule.controller('testController', function($scope) {
+        $scope.test = testModel;
+
+//        添加选项按钮
+        $scope.addOption = function() {
+            var option = {
+                content:''
+            };
+            $scope.test.options.push(option);
+        };
+
+//        删除按钮
+        $scope.delOption = function(index) {
+            $scope.test.options.splice(index,1);
+        };
+    });
+</script>
+    <pre>
+        在demo01上继续添加代码：添加若干选项并编辑选项内容
+
+        demo02和demo01不同的地方，除了新增的，主要还是JS的写法
+            1. 首先，在绑定数据时，没有再直接写成字符串，而是将所有的数据封装到testModel这个对象中，然后在模板中，使用name、score等地方都相应改成
+               test.name、test.score，其他值同理。
+            2. 另外，在controller部分，没有用var testController = function($scope){};这种写法，而是采用myAppModule.controller('testController', function($scope) {})；
+               这样更明确指定了这个controller属于myApp这个模块。
+
+            这样更像MVC模式
+
+            3. 在HTML部分，分为两个区，一个是新建区域，一个是预览区域，都添加了一个列表，用来放置各选项。并添加了一个“添加选项”按钮
+               在li标签使用ng-repeat指令来进行循环输出，<span class="red">li标签将会根据$scope中的options数据长度被复制多份。</span>
+               在循环范围内，可以使用<span class="red">$index</span>获得当前循环的索引，可以认为这是一个公共变量，直接使用。
+               同时，循环输出的每个input元素也使用ng-model与选项的内容进行双向绑定。
+               删除链接，点击的时候调用$scope中的delOption()方法
+
+            4. 这样绑定好后，模板中的列表与数据模型中的options数组便保存了同步，在页面上点击增加选项，数据中便会增加一个元素，数组中的每个元素也会实时反馈在模板中。
+    </pre>
+</body>
+</html>
