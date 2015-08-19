@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>综合案例-在线试题 单个节点的控制Demo03</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+        .red{color:#ff0000;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="testController">
+    <h1>{{test.newTitle}}</h1>
+    题目：<input type="text" ng-model="test.name"/>
+    <br/>
+    分数：<input type="text" ng-model="test.score"/>
+    <br/>
+    类型：<select ng-model="test.type"><option value="1">单选</option><option value="2">多选</option></select>
+    <br/>
+    选项：<button ng-click="addOption()">添加选项</button>
+    <br/>
+    <ul>
+        <li ng-repeat="option in test.options">
+            <b>{{$index+1}}</b>
+            <input type="text" ng-model="option.content" value="option.content"/>
+            <a href="javascript:void(0)" ng-click="delOption($index)">删除</a>
+        </li>
+    </ul>
+    <hr/>
+
+    <div>
+        <h1>{{test.previewTitle}}</h1>
+        <b>{{test.name}}</b> ({{test.score}}分)
+        <ul>
+            <li ng-repeat="option in test.options">
+                <b>{{$index+1}}</b>
+                <input type="radio" name="optRadio" ng-show="test.type==1"/>
+                <input type="checkbox" ng-show="test.type==2"/>
+                {{option.content}}
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var myAppModule = angular.module('myApp', [], function() {
+       console.log('started');
+    });
+
+//    添加JS代码
+//    初始化，将所有数据写成testModel对象
+    var testModel = {
+        newTitle:'新建试题',
+        previewTitle:'预览试题',
+        name:'',
+        score:'',
+        type:'1',
+        options:[]
+    }
+
+    myAppModule.controller('testController', function($scope) {
+        $scope.test = testModel;
+
+//        添加选项按钮
+        $scope.addOption = function() {
+            var option = {
+                content:''
+            };
+            $scope.test.options.push(option);
+        };
+
+//        删除按钮
+        $scope.delOption = function(index) {
+            $scope.test.options.splice(index,1);
+        };
+    });
+</script>
+    <pre>
+        在demo02上继续优化代码，新建试题的时候，不要局限于单选题，也需要用多选题，二者能切换，同时下方的预览区域内，选择框也进行单选和多选的切换。
+
+        首先，在demo02上，处理按钮的点击时，使用了ng-click指令，而没有使用onclick，这是为什么呢，这是因为AngularJS根据自己的需要进行了封装。
+        把addOption这个函数定义在了controller范围内，如果用常规的onclick是无法访问到的，换言之，我们页面上的作用域，ng已经帮规划好了，只需要我们按照它提供的方式使用就OK啦
+
+        好的，一个onclick，我们可以联想到在JS中还有好多类似这样的方法，这些方法ng都进行了封装，更厉害的是，除此之外，ng还额外提供了许多更详细的控制节点指令
+
+        在HTML页面中，新增了一个下拉框，可以选择类型，并与test.type建立双向绑定。需要关注的是预览试题部分，添加了一个checkbox控件来为多选题提供选择框，显然单选框和多选框是不能并存的，
+        所以这里用到了ng-show这个指令来控制它们的显示与隐藏，ng-show接收boolean类型的值以及计算结果为boolean类型的表达式。
+
+        <span class="red">注意：</span>ng-show以及其他所有指令的值不是简单的字符串，而是字符串表达式，拥有计算能力。可以理解为它将来会在框架的某个地方放进eval()或是类似的函数执行。{{}}里的内容也是一样。
+        所以这里给radio的ng-show赋值为test.type==1，checkbox的ng-show赋值为test.type==2。当试题为单选题时，radio的ng-show得到值true。
+
+        在JS中，只在testModel中新增了一项type:'1'，表示题的类型，1为单选，2为多选，并给默认值为1。
+    </pre>
+</body>
+</html>
