@@ -42,7 +42,7 @@
         1. ng-controller="testController"用来声明一个需要和数据进行绑定的模板区域，它作用域就是这个div内的东西，并起名为testController
            JS代码中定义了一个名为testController的函数与之对应，将在这个函数内完成绑定。
            函数传入一个参数$scope，表示这个作用范围，分别为作用范围内的testTitle、previewTitle、testName、testScore四个变量赋值。此时，h1标签内的{{}}便能得到相应的值了。
-           通过{{}}只能完成数据向模板的单向绑定
+           通过{{}}只能完成数据向模板的单向绑定。想要进行双向绑定，需要用到ng-model指令，在这个demo里，就使用它分别为题目和分数进行双向绑定，这样，当输入框内的值发生变化时，函数中的变量也会跟着变。
     </pre>
 </body>
 </html>
