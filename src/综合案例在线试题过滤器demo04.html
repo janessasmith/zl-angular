@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>综合案例-在线试题 过滤器Demo04</title>
+    <!--引入CSS-->
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/reset.css"/>
+    <style type="text/css">
+        pre{background-color:#000;color:#fff;}
+        .red{color:#ff0000;}
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="testController">
+    <h1>{{test.newTitle}}</h1>
+    题目：<input type="text" ng-model="test.name"/>
+    <br/>
+    分数：<input type="text" ng-model="test.score"/>
+    <br/>
+    类型：<select ng-model="test.type"><option value="1">单选</option><option value="2">多选</option></select>
+    <br/>
+    选项：<button ng-click="addOption()">添加选项</button>
+    <br/>
+    <ul>
+        <li ng-repeat="option in test.options">
+            <b>{{$index+1}}</b>
+            <input type="text" ng-model="option.content" value="option.content"/>
+            <a href="javascript:void(0)" ng-click="delOption($index)">删除</a>
+        </li>
+    </ul>
+    <hr/>
+
+    <div>
+        <h1>{{test.previewTitle}}</h1>
+        <b>{{test.name}}</b> ({{test.score}}分)
+        <ul>
+            <li ng-repeat="option in test.options">
+                <b>{{$index+1}}</b>
+                <input type="radio" name="optRadio" ng-show="test.type==1"/>
+                <input type="checkbox" ng-show="test.type==2"/>
+                {{option.content}}
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var myAppModule = angular.module('myApp', [], function() {
+       console.log('started');
+    });
+
+//    添加JS代码
+//    初始化，将所有数据写成testModel对象
+    var testModel = {
+        newTitle:'新建试题',
+        previewTitle:'预览试题',
+        name:'',
+        score:'',
+        type:'1',
+        options:[]
+    }
+
+    myAppModule.controller('testController', function($scope) {
+        $scope.test = testModel;
+
+//        添加选项按钮
+        $scope.addOption = function() {
+            var option = {
+                content:''
+            };
+            $scope.test.options.push(option);
+        };
+
+//        删除按钮
+        $scope.delOption = function(index) {
+            $scope.test.options.splice(index,1);
+        };
+    });
+</script>
+    <pre>
+        在demo02上继续优化代码，现在我们来学习一下过滤器(filter)
+
+        1. 过滤器：是指对输出的内容进行格式化，如格式化美元、日期等等，ng自己提供了一些过滤器，如排序、字符串内容筛选，当然我们也可以自定义过滤器。
+    </pre>
+</body>
+</html>
